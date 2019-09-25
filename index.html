@@ -6,32 +6,11 @@
   <meta http-equiv="X-UA-Compatible" content="ie=edge">
   <title>Document</title>
   <link rel="stylesheet" href="css/main.css">
-  <script defer src="face-api.min.js"></script>
-  <script defer src="script.js"></script>
-  <style>
-    body {
-      margin: 0;
-      padding: 0;
-      width: 100vw;
-      height: 100vh;
-      display: flex;
-      justify-content: center;
-      align-items: center;
-    }
-    canvas {
-      position: absolute;
-    }
-    #computerVisionVideo {
-      visibility: hidden;
-      position: absolute;
-    }
-  </style>
+  <script defer src="js/face-api.min.js"></script>
+  <script defer src="js/script.js"></script>
 </head>
 <body>
-    <video id="videoContainer">
-				<!--<source id="mp4_src"  type="video/mp4">-->
-    </video>
-
+    <video id="videoContainer"></video>
   <video id="computerVisionVideo" width="720" height="560" autoplay muted></video>
 </body>
 </html>

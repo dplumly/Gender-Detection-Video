@@ -27,48 +27,34 @@ video.addEventListener('play', () => {
         //console.log(detections);
         const resizedDetections = faceapi.resizeResults(detections, displaySize)
         canvas.getContext('2d').clearRect(0, 0, canvas.width, canvas.height)
-        faceapi.draw.drawDetections(canvas, resizedDetections)
-        faceapi.draw.drawFaceLandmarks(canvas, resizedDetections)
-        faceapi.draw.drawFaceExpressions(canvas, resizedDetections)
+        //faceapi.draw.drawDetections(canvas, resizedDetections)
+        //faceapi.draw.drawFaceLandmarks(canvas, resizedDetections)
+        //faceapi.draw.drawFaceExpressions(canvas, resizedDetections)
 
 
       //let age = detections[0].age;
       let gender = detections[0].gender;
       if (gender === "male") {
           console.log("dude between 30 and 40");
-          playVid1();
+          videoNumber = videosClips[1];
+          playVid1(videoNumber);
       } else if (gender === "female") {
           console.log("lady");
       }
   }, 3000)
-})
+});
 
 
 let theVid = document.getElementById("videoContainer");
 function playVid1() {
-    theVid.src = "video/sample1.mp4";
+    theVid.src = videoNumber;
     theVid.play();
     console.log("play video1!");
 }
 
-let theVid2 = document.getElementById("videoContainer");
-function playVid2() {
-    theVid.src = "video/sample2.mp4";
-    theVid2.play(); 
-    setTimeout(detections, 5500);
-    console.log("play video2!");
-}
 
-//setTimeOut(() => playVid2, 5000);
-//setTimeOut(playVid2, 5500);
-
-
-
-/*Video Files
-theVid.src = videosClips[0];
-
-var basepath = '/video/'
+//Video Files
 var videosClips = [
-    'sample1.mp4',
-    'sample2.mp4'
-]*/
+    'video/sample1.mp4',
+    'video/sample2.mp4'
+];
