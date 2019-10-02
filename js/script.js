@@ -1,10 +1,9 @@
 const video = document.getElementById('computerVisionVideo')
 
-// RODO: Variable to store if we have an active person
-var isTherePerson = false;
-// Variable to set and clear the isTherePerson timeout
-var activeTimeout;
-var timerDuration = 5000;
+
+var isTherePerson = false; // Variable to store if we have an active person
+var activeTimeout; // Variable to set and clear the isTherePerson timeout
+var timerDuration = 5000; // timer to avoid main setInterval from triggering
 
 Promise.all([
   faceapi.nets.tinyFaceDetector.loadFromUri('/models'),
@@ -32,46 +31,48 @@ video.addEventListener('play', () => {
 
     setInterval(async () => {
         const detections = await faceapi.detectAllFaces(video, new faceapi.TinyFaceDetectorOptions()).withFaceLandmarks().withFaceExpressions().withAgeAndGender()
-        // Uncomment if you want to see the computer visions variables
-        console.log(detections);
+        
+        console.log(detections); // To see the computer visions variables
         const resizedDetections = faceapi.resizeResults(detections, displaySize)
 		canvas.getContext('2d').clearRect(0, 0, canvas.width, canvas.height)
-		// if you want to draw the computer vision information
-		// go into css and comment out <#computerVisionVideo>
+		// if you want to draw the computer vision information on screen
+		// go into css and comment out <#computerVisionVideo> styles and uncomment .draws below
 
         //faceapi.draw.drawDetections(canvas, resizedDetections)
         //faceapi.draw.drawFaceLandmarks(canvas, resizedDetections)
 		//faceapi.draw.drawFaceExpressions(canvas, resizedDetections)
 
-		// Controls what video gets played
-		// let age = detections[0]expressions;
-        // let age = detections[0].age;
-
 
 
         console.log("We've got a person!"); // debugging
-        //RODO: If there is no active face, fire the displayText Function
+        //If there is a person play video dependant on computer vision variables
         // set the isTherePerson variable to true
         // set a time out to de-activate the face after a duration
         if (!isTherePerson) {
+            // find out gender/age/expression here
+
+            // Other variables to make more personalized
+		    // let age = detections[0]expressions;
+            // let age = detections[0].age;
             let gender = detections[0].gender;
             if (gender === "male") {
-                console.log("dude between 30 and 40");
+                console.log("We found a dude!");
                 videoNumber = videosClips[0];
                 playVid(videoNumber);
                 
-                timerDuration = 5000;  // setting timeDuration to 5 secs to delay setInterval
+                timerDuration = 5000;  // setting timeDuration to 5 secs to delay setInterval main loop
                 console.log("timeDuration should be 5 secs " + timerDuration);
             } else if (gender === "female") {
-                console.log("lady");
+                console.log("We found a lady");
+                videoNumber = videosClips[1];
+                playVid(videoNumber);
             }
-
             isTherePerson = true;
             activeTimeout = setTimeout(() => {
                 isTherePerson = false;
             }, timerDuration);
         } else {
-            // waiting for the video to end, then we can check again
+            // waiting for the video to end, then we can check for a person
             isVideoDone();
             // reset the timeout
             clearTimeout(activeTimeout);
@@ -86,7 +87,7 @@ video.addEventListener('play', () => {
 function isVideoDone() {
     const videoContent = document.getElementById('videoContainer');
     videoContent.onended = (event) => {
-        timerDuration = 3000;
+        timerDuration = 300;
         console.log("Waiting for video to end " + timerDuration);
     }
 }
