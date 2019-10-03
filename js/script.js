@@ -3,7 +3,9 @@ const video = document.getElementById('computerVisionVideo')
 
 var isTherePerson = false; // Variable to store if we have an active person
 var activeTimeout; // Variable to set and clear the isTherePerson timeout
-var timerDuration = 5000; // timer to avoid main setInterval from triggering
+var mainLoopTimer = 1000; // must be lower than timerDuration
+var timerDuration = 2000; // prevents setIntereval from running until video is complete
+
 
 Promise.all([
   faceapi.nets.tinyFaceDetector.loadFromUri('/models'),
@@ -50,14 +52,13 @@ video.addEventListener('play', () => {
         // set a time out to de-activate the face after a duration
         if (!isTherePerson) {
             // find out gender/age/expression here
-
             // Other variables to make more personalized
 		    // let age = detections[0]expressions;
             // let age = detections[0].age;
             let gender = detections[0].gender;
             if (gender === "male") {
                 console.log("We found a dude!");
-                videoNumber = videosClips[0];
+                videoNumber = videosClips[1];
                 playVid(videoNumber);
                 
                 timerDuration = 5000;  // setting timeDuration to 5 secs to delay setInterval main loop
@@ -80,7 +81,7 @@ video.addEventListener('play', () => {
                 isTherePerson = false;
             }, timerDuration);
         }
-    }, 3000)
+    }, mainLoopTimer)
 });
 
 // is the video done playing
